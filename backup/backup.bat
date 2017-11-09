@@ -54,8 +54,6 @@ if not exist %LogDir% (
 if errorlevel 1 goto error7z
 @echo %time% File is ready to send >> %LogFile%
 
-goto endTest 
-
 @rem Отправка файла. Используется универсальный SSH. 
 @echo %time% Sending started! >> %LogFile%
 @%~dp0pscp -l %distuser% -i %~dp0%key% -P 22 -C -scp -p -batch -v %archieveName% %distsrv%:%distsrvpath%
@@ -85,7 +83,7 @@ goto allsgood
 :error7z
 @echo %time% There was an error in 7z >> %LogFile%
 @set subject="%CompanyName%. Problem with 7z"
-@set body=" %ownName%. Go to server and copy files manually. Files wasn't sent to SRV"
+@set body=" %ownName%. Go to server and copy files manually. Files wasn't sent to SRV because wasn't ready"
 goto email
 
 :errorSSH
@@ -122,4 +120,3 @@ exit /b 1
 @echo ----------------%time%---------------- >> %LogFile%
 
 :endTest
-
