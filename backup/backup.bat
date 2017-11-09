@@ -83,7 +83,7 @@ goto allsgood
 :error7z
 @echo %time% There was an error in 7z >> %LogFile%
 @set subject="%CompanyName%. Problem with 7z"
-@set body=" %ownName%. Go to server and copy files manually. Files wasn't sent to SRV because wasn't ready"
+@set body=" %ownName%. Go to server and copy files manually. Files wasn't sent to SRV because it wasn't 7zipped"
 goto email
 
 :errorSSH
