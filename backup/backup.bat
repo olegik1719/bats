@@ -20,7 +20,11 @@ if not exist %LogDir% (
 @echo %time% curdate=%curdate% >> %LogFile%
 
 @rem Setting...
-@set settings=%~dp0%ownName%.ini
+@if "%~1"=="" (
+	@set settings=%~dp0%ownName%.ini
+) else (
+	@set settings=%~dp0%~1
+)
 @echo %time% settings=%settings% >> %LogFile%
 @if not exist %SETTINGS% (
 @echo %time% FAIL: ini don't exist! >> %LogFile%
@@ -37,9 +41,7 @@ if not exist %LogDir% (
 @echo %time% archieveName=%archieveName% >> %LogFile%
 @echo %time% Archieve started!  >> %LogFile%
 
-
 @rem Если пароль на архив не задан, то не используем его.
-
 @if "%passwd%"=="" (
 	@set pPsw=%passwd%
 	@echo %time% password is Empty  >> %LogFile%
@@ -48,8 +50,7 @@ if not exist %LogDir% (
 	@echo %time% password is not Empty pPsw=%pPsw%  >> %LogFile%
 )
 
-@rem Операция сжатия. Можно использовать все, что угодно.
-
+@rem Операция сжатия. Можно использовать все, что угодно. 
 @%~dp07za.exe a -ssw -mx9 %pPsw% -r0 %archieveName% %source%
 if errorlevel 1 goto error7z
 @echo %time% File is ready to send >> %LogFile%
@@ -83,7 +84,7 @@ goto allsgood
 :error7z
 @echo %time% There was an error in 7z >> %LogFile%
 @set subject="%CompanyName%. Problem with 7z"
-@set body=" %ownName%. Go to server and copy files manually. Files wasn't sent to SRV because it wasn't 7zipped"
+@set body=" %ownName%. Go to server and copy files manually. Files wasn't sent to SRV"
 goto email
 
 :errorSSH
