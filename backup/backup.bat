@@ -13,7 +13,7 @@ if not exist %LogDir% (
 	md %LogDir%
 )
 @if errorlevel 1 set LogDir=%~dp0Logs
-@set LogFile=%LogDir%Log-%ownName%-%curdate%.log
+@set LogFile=%LogDir%Log-%ownName%%~1-%curdate%.log
 
 @echo ----------------%time%---------------- >> %LogFile%
 @echo %time% Script started >> %LogFile%
