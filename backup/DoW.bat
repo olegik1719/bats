@@ -1,14 +1,34 @@
 @rem @echo off
-@set test=%1
-@echo start
-@echo %test%
+@set /a DoW= (10%DATE:~0,2% %% 100 + ((%DATE:~6,4%) - ((14 - (10%DATE:~3,2% %% 100)) / 12)) + ((%DATE:~6,4%) - ((14 - (10%DATE:~3,2% %% 100)) / 12)) / 4 - (%DATE:~6,4% - ((14 - 10%DATE:~3,2% %% 100) / 12)) / 100 + (%DATE:~6,4% - ((14 - 10%DATE:~3,2% %% 100) / 12)) / 400 + 31 * (10%DATE:~3,2% %% 100 + 12 * ((14 - 10%DATE:~3,2% %% 100) / 12) - 2) /12 ) %% 7
 
-@if "%test%"=="" (
-@	set pTest=%test%
-@	echo Empty %pTest%
-) else (
-	@set pTest=-p%test%
-	@echo Non-empty %pTest%
-)
+@goto day%DoW%
 
-@echo %pTest%
+:day0
+@echo Sunday
+@goto finish
+
+:day1
+@echo Monday
+@goto finish
+
+:day2
+@echo Tuesday
+@goto finish
+
+:day3
+@echo Wednesday
+@goto finish
+
+:day4
+@echo Thursday
+@goto finish
+
+:day5
+@echo Friday
+@goto finish
+
+:day0
+@echo Saturday
+@goto finish
+
+:finish
