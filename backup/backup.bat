@@ -101,7 +101,7 @@ goto email
 
 :email
 @echo %time% We will send Error mail >> %LogFile%
-@%~dp0mailsend -smtp %server% -port %port% -t %toaddress% +cc +bc -f %from% -sub %subject% -M %body% -attach %LogFile% -ssl -auth -user %username% -pass %password% -q
+@%~dp0mailsend -smtp %server% -port %port% -t %toaddress% +cc +bc -f %from% -sub %subject% -M %body% -attach %LogFile% -ssl -auth -user %username% -pass %password% -log %LogFile% 
 @echo %time% Error mail sent >> %LogFile%
 
 goto enderror
