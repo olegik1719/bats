@@ -9,6 +9,12 @@ work
 tomcat.*.win.bat -- win*
 tomcat.*.unix.sh -- *nix (разрешить запуск командой "chmod +x tomcat.*.sh")
 
+Необходимо прописать:
+CATALINA_HOME -- папка с распакованным tomcat'ом (с папкой bin);
+
+Желательно прописать(особенно в unix):
+CATALINA_BASE -- папка c конфигурационными папками (conf, logs, temp, webapps, work)
+
 Для запуска используйте tomcat.startup*
 
 Для остановки используйте tomcat.shutdown*
