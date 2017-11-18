@@ -13,3 +13,7 @@ tomcat.*.unix.sh -- *nix (разрешить запуск командой "chmo
 
 Для остановки используйте tomcat.shutdown*
 
+Использовались ресурсы:
+
+https://stackoverflow.com/questions/16110528/tomcat-multiple-instances-simultaneously/21945707#21945707
+http://www.ramkitech.com/2011/07/running-multiple-tomcat-instances-on.html
