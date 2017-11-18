@@ -9,7 +9,7 @@ work
 tomcat.*.win.bat -- win*
 tomcat.*.unix.sh -- *nix (разрешить запуск командой "chmod +x tomcat.*.sh")
 
-Для запуска tomcat.startup*
+Для запуска используйте tomcat.startup*
 
-Для погашения tomcat.shutdown*
+Для остановки используйте tomcat.shutdown*
 
