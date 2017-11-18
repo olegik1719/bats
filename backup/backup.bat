@@ -13,14 +13,18 @@ if not exist %LogDir% (
 	md %LogDir%
 )
 @if errorlevel 1 set LogDir=%~dp0Logs
-@set LogFile=%LogDir%Log-%ownName%-%curdate%.log
+@set LogFile=%LogDir%Log-%ownName%%~1-%curdate%.log
 
 @echo ----------------%time%---------------- >> %LogFile%
 @echo %time% Script started >> %LogFile%
 @echo %time% curdate=%curdate% >> %LogFile%
 
 @rem Setting...
-@set settings=%~dp0%ownName%.ini
+@if "%~1"=="" (
+	@set settings=%~dp0%ownName%.ini
+) else (
+	@set settings=%~dp0%~1
+)
 @echo %time% settings=%settings% >> %LogFile%
 @if not exist %SETTINGS% (
 @echo %time% FAIL: ini don't exist! >> %LogFile%
@@ -37,9 +41,7 @@ if not exist %LogDir% (
 @echo %time% archieveName=%archieveName% >> %LogFile%
 @echo %time% Archieve started!  >> %LogFile%
 
-
 @rem Если пароль на архив не задан, то не используем его.
-
 @if "%passwd%"=="" (
 	@set pPsw=%passwd%
 	@echo %time% password is Empty  >> %LogFile%
@@ -48,13 +50,10 @@ if not exist %LogDir% (
 	@echo %time% password is not Empty pPsw=%pPsw%  >> %LogFile%
 )
 
-@rem Операция сжатия. Можно использовать все, что угодно.
-
+@rem Операция сжатия. Можно использовать все, что угодно. 
 @%~dp07za.exe a -ssw -mx9 %pPsw% -r0 %archieveName% %source%
 if errorlevel 1 goto error7z
 @echo %time% File is ready to send >> %LogFile%
-
-goto endTest 
 
 @rem Отправка файла. Используется универсальный SSH. 
 @echo %time% Sending started! >> %LogFile%
@@ -102,7 +101,7 @@ goto email
 
 :email
 @echo %time% We will send Error mail >> %LogFile%
-@%~dp0mailsend -smtp %server% -port %port% -t %toaddress% +cc +bc -f %from% -sub %subject% -M %body% -attach %LogFile% -ssl -auth -user %username% -pass %password% -q
+@%~dp0mailsend -smtp %server% -port %port% -t %toaddress% +cc +bc -f %from% -sub %subject% -M %body% -attach %LogFile% -ssl -auth -user %username% -pass %password% -log %LogFile% 
 @echo %time% Error mail sent >> %LogFile%
 
 goto enderror
@@ -122,4 +121,3 @@ exit /b 1
 @echo ----------------%time%---------------- >> %LogFile%
 
 :endTest
-
