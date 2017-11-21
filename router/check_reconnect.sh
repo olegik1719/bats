@@ -1,7 +1,5 @@
 #!/bin/bash
 # оригинал здесь: https://habrahabr.ru/sandbox/44866/
-#p1='prov1' #имя основного провайдера
-#p1='192.168.11.2' # IP MTS
 
 mainEth=eth0
 mainGW=192.168.1.1
