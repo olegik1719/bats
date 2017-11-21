@@ -4,11 +4,9 @@
 #p1='192.168.11.2' # IP MTS
 
 mainEth=eth0
-#mainIP=192.168.1.4
 mainGW=192.168.1.1
 
 secEth=eth1
-#secIP=192.168.1.200
 secGW=192.168.1.2
 
 route=/sbin/route
@@ -27,8 +25,6 @@ if [ -f $flag ]
         then {
                 echo `date` Flag Exists >> $log
         ## Тестим основной канал(через вторую сетевуху): ping && wget
-                #if (/bin/ping -I $secEth -c $COUNT $test_ping &> /dev/null)&&(wget --bind-address=$secIP $test_wget --max-redirect 0 -O null)
-                #if (/bin/ping -I $secEth -c $COUNT $test_ping &> /dev/null)&&(curl --interface $secEth -m 5 -I $test_wget)
                 if (/bin/ping -I $secEth -c $COUNT $test_ping &> /dev/null)&&[ "$(curl -I -m 5 -I --interface $secEth $test_wget 2>/dev/null | head -n 1 | cut -d$' ' -f2)"=="200" ]
                         ### Если Методом пинга тест проходит И Методом wget тест проходит
                                 then {
@@ -54,8 +50,6 @@ if [ -f $flag ]
                 fi
         }
 # Если флажка нет,(else)
-#elif (/bin/ping -I $mainEth -c $COUNT $test_ping &> /dev/null)&&(wget --bind-address=$mainIP $test_wget --max-redirect 0 -O null)
-#elif (/bin/ping -I $mainEth -c $COUNT $test_ping &> /dev/null)&&(curl --interface $secEth -m 5 -I $test_wget)
 elif (/bin/ping -I $mainEth -c $COUNT $test_ping &> /dev/null)&&[ "$(curl -I -m 5 -I --interface $mainEth $test_wget 2>/dev/null | head -n 1 | cut -d$' ' -f2)"=="200" ]
         ## Тестим основной канал (уже через первую сетевуху): ping && wget
                 then
@@ -63,8 +57,6 @@ elif (/bin/ping -I $mainEth -c $COUNT $test_ping &> /dev/null)&&[ "$(curl -I -m 
                                 echo `date`  All\'s good. Nothing else >> $log
                         }
                 ### Если инета нет, то тестируем резервный канал(через вторую сетевуху): ping && wget
-                #elif (/bin/ping -I $secEth -c $COUNT $test_ping &> /dev/null)&&(wget --bind-address=$secIP $test_wget --max-redirect 0 -O null)
-                #elif (/bin/ping -I $secEth -c $COUNT $test_ping &> /dev/null)&&(curl --interface $secEth -m 5 -I $test_wget)
                 elif (/bin/ping -I $secEth -c $COUNT $test_ping &> /dev/null)&&[ "$(curl -I -m 5 -I --interface $secEth $test_wget 2>/dev/null | head -n 1 | cut -d$' ' -f2)"=="200" ]
                                         #### Если инет через вторую сетевуху:
                         then
