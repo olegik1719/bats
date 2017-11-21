@@ -31,7 +31,7 @@ if [ -f $flag ]
 					# Удаляем "перекрестные" роуты
 					$route del default gw $secGW dev $mainEth
 					$route del default gw $mainGW dev $secEth
-					# Добавляем "прямые" роуты
+					# Добавляем "прямые" роуты. Порядок важен!
 					$route add default gw $secGW dev $secEth
 					$route add default gw $mainGW dev $mainEth
 					#### Удаляем флажок
@@ -54,12 +54,13 @@ elif (/bin/ping -I $mainEth -c $COUNT $test_ping &> /dev/null)&&(curl --interfac
 		elif (/bin/ping -I $secEth -c $COUNT $test_ping &> /dev/null)&&(curl --interface $secEth -m 5 -I $test_wget) 
 					#### Если инет через вторую сетевуху:
 			then
-				{	#### Переключаем каналы
-					# Удаляем "прямые" роуты
+				{	
 					echo `date` Test passed >> $log
+					#### Переключаем каналы
+					# Удаляем "прямые" роуты
 					$route del default gw $secGW dev $secEth
 					$route del default gw $mainGW dev $mainEth
-					# Добавляем "перекрестные" роуты
+					# Добавляем "перекрестные" роуты. Порядок важен!
 					$route add default gw $mainGW dev $secEth
 					$route add default gw $secGW dev $mainEth
 					#### ставим флажок
