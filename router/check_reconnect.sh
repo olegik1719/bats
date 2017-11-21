@@ -34,8 +34,8 @@ if [ -f $flag ]
 					route del default gw $secGW dev $mainEth
 					route del default gw $mainGW dev $secEth
 					# Добавляем "прямые" роуты
-					route add default gw $mainGW dev $mainEth
 					route add default gw $secGW dev $secEth
+					route add default gw $mainGW dev $mainEth
 					#### Удаляем флажок
 					rm $flag
 					echo `date` Flag deleted! >> $log
