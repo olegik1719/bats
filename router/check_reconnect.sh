@@ -6,7 +6,6 @@ mainGW=192.168.1.1
 secGW=192.168.1.2
 
 mainEth=eth0
-
 secEth=eth1
 
 test_ping='8.8.8.8'
@@ -16,8 +15,9 @@ COUNT='3' # количество пакетов для отправки
 log='/var/log/netstatus.log'
 flag='/tmp/res_inet_flag'
 
+route=/sbin/route
+
 # Если есть флажок резервного канала (у нас интернет через резервный канал):
-route
 if [ -f $flag ] 
 	then {
 		echo `date` Flag Exists! >> $log
@@ -29,11 +29,11 @@ if [ -f $flag ]
 					echo `date` Test passed >> $log
 					#### Переключаем каналы:
 					# Удаляем "перекрестные" роуты
-					route del default gw $secGW dev $mainEth
-					route del default gw $mainGW dev $secEth
+					$route del default gw $secGW dev $mainEth
+					$route del default gw $mainGW dev $secEth
 					# Добавляем "прямые" роуты
-					route add default gw $secGW dev $secEth
-					route add default gw $mainGW dev $mainEth
+					$route add default gw $secGW dev $secEth
+					$route add default gw $mainGW dev $mainEth
 					#### Удаляем флажок
 					rm $flag
 					echo `date` Flag deleted! >> $log
@@ -57,11 +57,11 @@ elif (/bin/ping -I $mainEth -c $COUNT $test_ping &> /dev/null)&&(curl --interfac
 				{	#### Переключаем каналы
 					# Удаляем "прямые" роуты
 					echo `date` Test passed >> $log
-					route del default gw $secGW dev $secEth
-					route del default gw $mainGW dev $mainEth
+					$route del default gw $secGW dev $secEth
+					$route del default gw $mainGW dev $mainEth
 					# Добавляем "перекрестные" роуты
-					route add default gw $mainGW dev $secEth
-					route add default gw $secGW dev $mainEth
+					$route add default gw $mainGW dev $secEth
+					$route add default gw $secGW dev $mainEth
 					#### ставим флажок
 					touch $flag
 					echo `date` Flag deleted! >> $log
