@@ -23,12 +23,12 @@ flag='/tmp/res_inet_flag'
 route
 if [ -f $flag ] 
 	then {
-		echo "Flag Exists!"
+		echo `date` Flag Exists! >> $log
 	## Тестим основной канал(через вторую сетевуху): ping && wget
 		if (/bin/ping -I $secEth -c $COUNT $test_ping &> /dev/null)&&(wget --bind-address=$secIP $test_wget --max-redirect 0 -O null) 
 			### Если Методом пинга тест проходит И Методом wget тест проходит
 				then {
-					echo "Test passed"
+					echo `date` Test passed >> $log
 					#### Переключаем каналы:
 					# Удаляем "перекрестные" роуты
 					route del default gw $secGW dev $mainEth
@@ -38,7 +38,7 @@ if [ -f $flag ]
 					route add default gw $secGW dev $secEth
 					#### Удаляем флажок
 					rm $flag
-					echo "Flag deleted!"
+					echo `date` Flag deleted! >> $log
 				}
 			### Если не проходит тест, то ничего не делаем.
 		fi
@@ -48,7 +48,7 @@ elif (/bin/ping -I $mainEth -c $COUNT $test_ping &> /dev/null)&&(wget --bind-add
 	## Тестим основной канал (уже через первую сетевуху): ping && wget
 		then 
 			{
-				echo "All's good. Nothing else"
+				echo `date`  All\'s good. Nothing else >> $log
 			}
 		### Если инета нет, то тестируем резервный канал(через вторую сетевуху): ping && wget
 		elif (/bin/ping -I $secEth -c $COUNT $test_ping &> /dev/null)&&(wget --bind-address=$secIP $test_wget --max-redirect 0 -O null) 
@@ -56,6 +56,7 @@ elif (/bin/ping -I $mainEth -c $COUNT $test_ping &> /dev/null)&&(wget --bind-add
 			then
 				{	#### Переключаем каналы
 					# Удаляем "прямые" роуты
+					echo `date` Test passed >> $log
 					route del default gw $secGW dev $secEth
 					route del default gw $mainGW dev $mainEth
 					# Добавляем "перекрестные" роуты
@@ -63,5 +64,6 @@ elif (/bin/ping -I $mainEth -c $COUNT $test_ping &> /dev/null)&&(wget --bind-add
 					route add default gw $secGW dev $mainEth
 					#### ставим флажок
 					touch $flag
+					echo `date` Flag deleted! >> $log
 				}
 fi
