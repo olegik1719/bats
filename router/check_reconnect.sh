@@ -24,7 +24,7 @@ if [ -f $flag ]
 	## Тестим основной канал(через вторую сетевуху): ping && wget
 		#if (/bin/ping -I $secEth -c $COUNT $test_ping &> /dev/null)&&(wget --bind-address=$secIP $test_wget --max-redirect 0 -O null) 
 		#if (/bin/ping -I $secEth -c $COUNT $test_ping &> /dev/null)&&(curl --interface $secEth -m 5 -I $test_wget) 
-		if (/bin/ping -I $secEth -c $COUNT $test_ping &> /dev/null)&&( "$(curl -I -m 5 -I --interface $secEth $test_wget 2>/dev/null | head -n 1 | cut -d$' ' -f2)" -eq 200 )
+		if (/bin/ping -I $secEth -c $COUNT $test_ping &> /dev/null)&&[ "$(curl -I -m 5 -I --interface $secEth $test_wget 2>/dev/null | head -n 1 | cut -d$' ' -f2)"="200" ]
 
 			### Если Методом пинга тест проходит И Методом wget тест проходит
 				then {
@@ -45,7 +45,8 @@ if [ -f $flag ]
 	}
 # Если флажка нет,(else)
 #elif (/bin/ping -I $mainEth -c $COUNT $test_ping &> /dev/null)&&(wget --bind-address=$mainIP $test_wget --max-redirect 0 -O null)
-elif (/bin/ping -I $mainEth -c $COUNT $test_ping &> /dev/null)&&(curl --interface $secEth -m 5 -I $test_wget) 
+elif (/bin/ping -I $mainEth -c $COUNT $test_ping &> /dev/null)&&[ "$(curl -I -m 5 -I --interface $mainEth $test_wget 2>/dev/null | head -n 1 | cut -d$' ' -f2)"="200" ]
+
 	## Тестим основной канал (уже через первую сетевуху): ping && wget
 		then 
 			{
@@ -54,9 +55,9 @@ elif (/bin/ping -I $mainEth -c $COUNT $test_ping &> /dev/null)&&(curl --interfac
 		### Если инета нет, то тестируем резервный канал(через вторую сетевуху): ping && wget
 		#elif (/bin/ping -I $secEth -c $COUNT $test_ping &> /dev/null)&&(wget --bind-address=$secIP $test_wget --max-redirect 0 -O null) 
 		#elif (/bin/ping -I $secEth -c $COUNT $test_ping &> /dev/null)&&(curl --interface $secEth -m 5 -I $test_wget) 
-		elif (/bin/ping -I $secEth -c $COUNT $test_ping &> /dev/null)&&("$(curl -I -m 5 -I --interface $secEth $test_wget 2>/dev/null | head -n 1 | cut -d$' ' -f2)" -eq 200 )
+		elif (/bin/ping -I $secEth -c $COUNT $test_ping &> /dev/null)&&[ "$(curl -I -m 5 -I --interface $secEth $test_wget 2>/dev/null | head -n 1 | cut -d$' ' -f2)"="200" ]
 
-					#### Если инет через вторую сетевуху:
+			#### Если инет через вторую сетевуху:
 			then
 				{	
 					echo `date` Test passed >> $log
