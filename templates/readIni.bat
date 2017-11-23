@@ -1,15 +1,15 @@
 :: Чтение настроек из файла.
 :: Если параметр с именем файла настроек не задан -- используем свое име с расширением .ini
 
-@echo off
-if "%~1"=="" (
-	set settings=%~dp0%~n0.ini
+::@echo off
+@if "%~1"=="" (
+	@set settings=%~dp0%~n0.ini
 ) else (
-	set settings=%~dp0%~1
+	@set settings=%~dp0%~1
 )
 :: Если файла настроек не существует, завершаем скрипт с ошибкой.
-if not exist %SETTINGS% (
-  goto :error
+@if not exist %SETTINGS% (
+	  @goto :error
 )
 
 :: Читаем файл настроек
@@ -17,12 +17,12 @@ if not exist %SETTINGS% (
 :: Файл следующего вида:
 :: # После решетки -- комментарий
 :: Настройка=Значение.
-for /f "eol=# delims== tokens=1,2" %%i in (%SETTINGS%) do (
-  set %%i=%%j
+@for /f "eol=# delims== tokens=1,2" %%i in (%SETTINGS%) do @(
+	@set %%i=%%j
 )
 
 :: Прочитали -- выходим (красиво):
-exit /B 0
+@exit /B 0
 
 :error
-exit /B 1
+@exit /B 1
