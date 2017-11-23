@@ -17,7 +17,7 @@
 :: Файл следующего вида:
 :: # После решетки -- комментарий
 :: Настройка=Значение.
-@for /f "eol=# delims== tokens=1,2" %%i in (%SETTINGS%) do @(
+@for /f "eol=# delims== tokens=1,*" %%i in (%SETTINGS%) do @(
 	@set %%i=%%j
 )
 
